@@ -20,20 +20,17 @@ class AuthController extends Controller
             'password' => $pass,
         ];
 
-
-
         //Check email and pass
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Email hoặc mật khẩu không đúng',
+
             ], 401); // 401 Unauthorized
         }
 
         //Login success then create token
         $user = User::where('email', $credentials['email'])->first();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
@@ -42,10 +39,35 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name
             ],
-            'token' => $token,
-        ], 200)->cookie('auth_token', $token, 60 * 24, '/', null, true, true, false, 'Strict');
-        
-
+            // 'token' => $token,
+        ], 200);
     }
 
+    public function logout(Request $request)
+    {
+        // $user = $request->user();
+        // $user = $request->user();
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();   // vô hiệu hoá session hiện tại
+        $request->session()->regenerateToken(); // regenerate CSRF token
+
+        $request->user()->tokens()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đăng xuất thành công',
+        ], 200)->withCookie(cookie()->forget('laravel_session'))
+            ->withCookie(cookie()->forget('XSRF-TOKEN'));
+    }
+
+    public function me(Request $request)
+    {
+        // $user = $request->user();
+        // $user = $request->user();
+
+        return response()->json([
+            'success' => true,
+            'user' => $request->user()->name,
+        ]);
+    }
 }

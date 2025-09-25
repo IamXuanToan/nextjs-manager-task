@@ -10,9 +10,12 @@ export function createResourceEndpoints(resource: string) {
 
 export const API_ENDPOINTS = {
     AUTH: {
-        LOGIN: "auth/login",
+        LOGIN: "api/auth/login",
+        LOGOUT: "api/auth/logout",
+        ME: "api/auth/me",
+        SANCTUM: "sanctum/csrf-cookie",
     },
 
-    TASK: createResourceEndpoints("task"),
-    USER: createResourceEndpoints("user"),
+    TASK: createResourceEndpoints("api/task"),
+    USER: createResourceEndpoints("api/user"),
 };

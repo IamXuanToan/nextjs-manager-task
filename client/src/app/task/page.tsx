@@ -1,3 +1,10 @@
-import TaskView from "@/views/task/TaskView" 
+import CheckMe from "@/components/CheckMe";
+import TaskView from "@/views/task/TaskView";
 
-export default TaskView
+export default function page() {
+    return (
+        <CheckMe>
+            <TaskView />
+        </CheckMe>
+    );
+}

@@ -5,13 +5,23 @@ import { useTask } from "@/viewmodels/task/useTask";
 import { useColumns } from "@/views/task/TaskColums";
 import TaskSkeleton from "@/views/task/TaskSkeleton";
 import TaskTable from "@/views/task/TaskTable";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default function TaskView() {
     const { get_all_task } = useTask();
 
+
     const columns = useColumns();
 
-    if (get_all_task.isLoading) {
+    if (get_all_task.isError) {
+        const err = get_all_task.error;
+        if (err.success === false) {
+            return notFound();
+        }
+    }
+
+    if (get_all_task.isLoading || get_all_task.isFetching) {
         return <TaskSkeleton />;
     }
 
@@ -34,6 +44,7 @@ export default function TaskView() {
                         Đã hoàn thành
                     </li>
                 </ul>
+                <Link href={'/'}>Trang chủ</Link>
                 <Button className="hover:cursor-pointer">ADD TASK</Button>
             </div>
             <TaskTable columns={columns} data={get_all_task.data?.data ?? []} />

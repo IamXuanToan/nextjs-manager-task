@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useDisableOnPending from "@/lib/hooks/useDisableOnPending";
 import { RegisterForm, RegisterFormType } from "@/lib/validators/auth";
-import { useRegister } from "@/viewmodels/auth/register/useRegister";
+import { useRegister } from "@/viewmodels/auth/useRegister";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
